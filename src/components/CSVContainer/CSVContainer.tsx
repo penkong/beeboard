@@ -16,7 +16,7 @@ interface IProps {
 export const CSVContainer : FC<IProps> = ({ table }) => {
   const { fileCsv, message } = useApp()
 
-  const renderer = (info: File) => {
+  const renderer = (info: any) => {
     if(table) {
       return <div>i am table for csv {info.name}</div>
     } else {
@@ -27,7 +27,11 @@ export const CSVContainer : FC<IProps> = ({ table }) => {
 
   return (
     <div>
-      {fileCsv  ? renderer(fileCsv) : <div>{message}</div>}
+      {fileCsv  ? <>
+        
+        {renderer(fileCsv)}
+      </>
+      : <div>{message}</div>}
     </div>
   )
 }

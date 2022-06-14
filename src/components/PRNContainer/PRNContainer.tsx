@@ -15,7 +15,7 @@ interface IProps {
 export const PRNContainer: FC<IProps> = ({ table }) => {
 	const { filePrn, message } = useApp()
 
-  const renderer = (info: File) => {
+  const renderer = (info: any) => {
     if(table) {
       return <div>i am table for PRN {info.name}</div>
     } else {

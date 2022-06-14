@@ -1,4 +1,7 @@
-import React, { FC, useState } from 'react'
+import styles from './Uploader.module.css'
+
+import { FC, useState } from 'react'
+import CSVReader from 'react-csv-reader'
 
 // ---
 
@@ -14,9 +17,9 @@ interface IProps {
 // ---
 
 export const Uploader: FC<IProps> = ({ type }) => {
-
 	const [inLoading, setInLoading] = useState<boolean>(false)
-	const { setFileCSVAction , setFilePRNAction , setCorrectMessageAction } = useApp()
+	const { setFileCSVAction, setFilePRNAction, setCorrectMessageAction } =
+		useApp()
 
 	const fileHandler = async (f: File) => {
 		setInLoading(true)
@@ -24,9 +27,9 @@ export const Uploader: FC<IProps> = ({ type }) => {
 		if (window.File && window.FileReader && window.FileList && window.Blob) {
 			const name = f.name.split('.')
 			const ext = name[name.length - 1]
-			if(ext === 'csv' && type === 'csv') {
+			if (ext === 'csv' && type === 'csv') {
 				setFileCSVAction(f)
-			} else if(ext === 'prn' && type === 'prn') {
+			} else if (ext === 'prn' && type === 'prn') {
 				setFilePRNAction(f)
 			} else {
 				setCorrectMessageAction('File type is not supported')
@@ -40,17 +43,26 @@ export const Uploader: FC<IProps> = ({ type }) => {
 
 	return (
 		<UploaderStyled>
-			<label htmlFor="filePicker">
-				{type === 'csv' ? 'Upload CSV' : 'Upload PRN'}
-			</label>
-			<input
-				type="file"
-				id="filePicker"
-				accept="*"
-				onChange={e => {
-					onFileChange(e.target.files![0])
-				}}
-			/>
+			{type === 'csv' && (
+				<CSVReader
+					label="Upload CSV"
+					onFileLoaded={(f, fileInfo, originalFile) => setFileCSVAction(f)}
+					cssInputClass={styles.here}
+				/>
+			)}
+			{type === 'prn' && (
+				<>
+					<label htmlFor="filePicker">Upload PRN</label>
+					<input
+						type="file"
+						id="filePicker"
+						accept="*"
+						onChange={e => {
+							onFileChange(e.target.files![0])
+						}}
+					/>
+				</>
+			)}
 		</UploaderStyled>
 	)
 }

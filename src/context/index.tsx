@@ -8,8 +8,8 @@ import React, {
 } from 'react'
 
 interface IState {
-	fileCsv: File | null
-	filePrn: File | null
+	fileCsv: File | string[] | null
+	filePrn: File | string[] | null
 	message: string 
 	children?: ReactNode
 }
@@ -26,8 +26,8 @@ type IAction =
 	| { type: 'SET_CORRECT_MESSAGE_ACTION'; payload: string }
 
 type AppContextType = IState & {
-	setFileCSVAction: (payload: File | null) => void
-	setFilePRNAction: (payload: File | null) => void
+	setFileCSVAction: (payload: File | string[] | null) => void
+	setFilePRNAction: (payload: File | string[] | null) => void
 	setCorrectMessageAction: (payload: String) => void
 }
 
