@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom'
 // ---
 
 import { CSVContainer, PRNContainer, Uploader } from '../../components'
-import { AppContext } from '../../context'
-import { LiItemStyle } from './Home.styled'
 import {
+	LiItemStyle,
 	NavRowStyle,
 	MainRowStyle,
 	ContainerStyle,
@@ -27,15 +26,14 @@ export type ITabType = 'csv' | 'prn' | 'json' | 'table' | 'loader'
 export const Home = () => {
 	const [tab, setTab] = useState<ITabType>('csv')
   const [table , setTable] = useState<boolean>(true)
-  const [ file , setFile] = useState<File | null>(null)
 
-	const handleTabChange = (tab: ITabType) => 
+	const handleTabChange = (tab: ITabType) => {
 		setTab(tab)
+	}
 	
   const handleTableChange = () => setTable(() => !table)
 
 	return (
-    <AppContext.Provider value={{}}>
 		<ContainerStyle>
 			<NavRowStyle>
 				<Link to="/">Home</Link>
@@ -65,11 +63,10 @@ export const Home = () => {
           </LiItemStyle>
 				</LoaderRowStyle>
 				<TableContainerStyle>
-					{tab === 'csv' && <CSVContainer />}
-					{tab === 'prn' && <PRNContainer />}
+					{tab === 'csv' && <CSVContainer table={table}/>}
+					{tab === 'prn' && <PRNContainer table={table}/>}
 				</TableContainerStyle>
 			</MainRowStyle>
 		</ContainerStyle>
-    </AppContext.Provider>
 	)
 }

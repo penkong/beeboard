@@ -4,28 +4,32 @@ import React, {
 	ReactNode,
 	useReducer,
 	useContext,
-	useCallback,
+	useCallback
 } from 'react'
 
 interface IState {
 	fileCsv: File | null
 	filePrn: File | null
+	message: string 
 	children?: ReactNode
 }
 
-const initialState = {
+export const initialState = {
 	fileCsv: null,
-	filePrn: null
+	filePrn: null,
+	message: 'NO FILE YET'
 }
 
 type IAction =
-	| { type: 'SET_FILE_ACTION_CSV'; payload: File }
-	| { type: 'SET_FILE_ACTION_PRN'; payload: File }
+	| { type: 'SET_FILE_ACTION_CSV'; payload: File | null }
+	| { type: 'SET_FILE_ACTION_PRN'; payload: File | null }
+	| { type: 'SET_CORRECT_MESSAGE_ACTION'; payload: string }
 
 type AppContextType = IState & {
-	setFileCSVAction: (payload: File) => void
-		setFilePRNAction: (payload: File) => void
-	}
+	setFileCSVAction: (payload: File | null) => void
+	setFilePRNAction: (payload: File | null) => void
+	setCorrectMessageAction: (payload: String) => void
+}
 
 export const AppContext = React.createContext<IState | any>(initialState)
 
@@ -38,12 +42,24 @@ function appReducer(state: IState, action: IAction) {
 				...state,
 				fileCsv: action.payload
 			}
+		}case 'SET_FILE_ACTION_PRN': {
+			return {
+				...state,
+				filePrn: action.payload
+			}
 		}
 
 		case 'SET_FILE_ACTION_PRN': {
 			return {
 				...state,
 				filePrn: action.payload
+			}
+		}
+
+		case 'SET_CORRECT_MESSAGE_ACTION': {
+			return {
+				...state,
+				message: action.payload
 			}
 		}
 
@@ -56,12 +72,21 @@ export const AppProvider: FC<IState> = props => {
 	const [state, dispatch] = useReducer(appReducer, initialState)
 
 	const setFileCSVAction = useCallback(
-		(payload: any) => dispatch({ type: 'SET_FILE_ACTION_CSV', payload }),
+		(payload: File | null) => {
+			console.log(payload, 'from setFileCSVAction')
+			return dispatch({ type: 'SET_FILE_ACTION_CSV', payload })
+		},
 		[dispatch]
 	)
 
 	const setFilePRNAction = useCallback(
-		(payload: any) => dispatch({ type: 'SET_FILE_ACTION_PRN', payload }),
+		(payload: File | null) => dispatch({ type: 'SET_FILE_ACTION_PRN', payload }),
+		[dispatch]
+	)
+
+	const setCorrectMessageAction = useCallback(
+		(payload: string) =>
+			dispatch({ type: 'SET_CORRECT_MESSAGE_ACTION', payload }),
 		[dispatch]
 	)
 
@@ -69,7 +94,8 @@ export const AppProvider: FC<IState> = props => {
 		() => ({
 			...state,
 			setFileCSVAction,
-			setFilePRNAction
+			setFilePRNAction,
+			setCorrectMessageAction
 		}),
 		[state]
 	)
@@ -85,6 +111,6 @@ export const useApp = () => {
 	return context
 }
 
-export const ManagedAppContext: FC<IState> = ({  children, ...props }) => (
+export const ManagedAppContext: FC<IState> = ({ children, ...props }) => (
 	<AppProvider {...props}>{children}</AppProvider>
 )
