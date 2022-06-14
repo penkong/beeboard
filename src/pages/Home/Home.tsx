@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 // ---
 
 import { CSVContainer, PRNContainer, Uploader } from '../../components'
+import { AppContext } from '../../context'
 import { LiItemStyle } from './Home.styled'
 import {
 	NavRowStyle,
@@ -15,18 +16,26 @@ import {
 
 // ---
 
-export type ITabType = 'csv' | 'prn'
+export type ITabType = 'csv' | 'prn' | 'json' | 'table' | 'loader'
+
+
+
+
 
 // ---
 
 export const Home = () => {
 	const [tab, setTab] = useState<ITabType>('csv')
+  const [table , setTable] = useState<boolean>(true)
+  const [ file , setFile] = useState<File | null>(null)
 
-	const handleTabChange = (tab: ITabType) => {
+	const handleTabChange = (tab: ITabType) => 
 		setTab(tab)
-	}
+	
+  const handleTableChange = () => setTable(() => !table)
 
 	return (
+    <AppContext.Provider value={{}}>
 		<ContainerStyle>
 			<NavRowStyle>
 				<Link to="/">Home</Link>
@@ -39,17 +48,20 @@ export const Home = () => {
 						type="csv"
 						active={tab === 'csv'}
 					>
-						CSV : { tab === 'csv' ? 'Ready' : 'To Active' }
+						{ tab === 'csv' ? '' : 'To Activate' } CSV
 					</LiItemStyle>
 					<LiItemStyle
 						onClick={() => handleTabChange('prn')}
 						type="prn"
 						active={tab === 'prn'}
 					>
-						PRN : { tab === 'prn' ? 'Ready' : 'To Active' }
+						{ tab === 'prn' ? '' : 'To Activate' } PRN
 					</LiItemStyle>
-          <LiItemStyle type={tab}>
-            <Uploader />
+          <LiItemStyle type='loader'>
+            <Uploader type={tab} />
+          </LiItemStyle>
+          <LiItemStyle type={tab} onClick={handleTableChange}>
+            { table ? 'To Activate JSON' : 'To Activate Table' }
           </LiItemStyle>
 				</LoaderRowStyle>
 				<TableContainerStyle>
@@ -58,5 +70,6 @@ export const Home = () => {
 				</TableContainerStyle>
 			</MainRowStyle>
 		</ContainerStyle>
+    </AppContext.Provider>
 	)
 }

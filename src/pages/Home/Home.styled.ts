@@ -59,14 +59,14 @@ export const LiItemStyle = styled.li<{ type: ITabType , active?: boolean }>`
 	list-style: none;
 	width: 16%;
 	height: 90%;
-  color: black;
+  color: ${({ type}) => type === 'loader' ? 'white' : 'black'};
 	text-align: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;
   cursor: pointer;
   border: ${({ active}) => active ? '1px solid #686868' : 'none'};
-	background-color: #E4E4E4;
+	background-color: ${({ type}) => type === 'loader' ? '#808080' : '#E4E4E4'} ;
   &:hover {
     background-color: #686868;
     color: white;
@@ -74,8 +74,9 @@ export const LiItemStyle = styled.li<{ type: ITabType , active?: boolean }>`
 `
 
 export const TableContainerStyle = styled.div`
-  margin-top: 1%;
-  width: 100%;
+  width: 96%;
   height: 90%;
-  background-color: red
+  margin: auto;
+  margin-top: 0.5%;
+  background-color: #E4E4E4;
 `
