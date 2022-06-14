@@ -3,18 +3,19 @@ import { Link } from 'react-router-dom'
 
 // ---
 
-import { CSVContainer, PRNContainer } from '../../components'
+import { CSVContainer, PRNContainer, Uploader } from '../../components'
+import { LiItemStyle } from './Home.styled'
 import {
-  NavRowStyle,
+	NavRowStyle,
 	MainRowStyle,
 	ContainerStyle,
 	LoaderRowStyle,
-	TableContainerStyle,
+	TableContainerStyle
 } from './Home.styled'
 
 // ---
 
-type ITabType = 'csv' | 'prn'
+export type ITabType = 'csv' | 'prn'
 
 // ---
 
@@ -33,12 +34,23 @@ export const Home = () => {
 			</NavRowStyle>
 			<MainRowStyle>
 				<LoaderRowStyle>
-					<li onClick={()=>handleTabChange('csv')} value="csv">
-						CSV Loader
-					</li>
-					<li onClick={()=>handleTabChange('prn')} value="prn">
-						PRN Loader
-					</li>
+					<LiItemStyle
+						onClick={() => handleTabChange('csv')}
+						type="csv"
+						active={tab === 'csv'}
+					>
+						CSV : { tab === 'csv' ? 'Ready' : 'To Active' }
+					</LiItemStyle>
+					<LiItemStyle
+						onClick={() => handleTabChange('prn')}
+						type="prn"
+						active={tab === 'prn'}
+					>
+						PRN : { tab === 'prn' ? 'Ready' : 'To Active' }
+					</LiItemStyle>
+          <LiItemStyle type={tab}>
+            <Uploader />
+          </LiItemStyle>
 				</LoaderRowStyle>
 				<TableContainerStyle>
 					{tab === 'csv' && <CSVContainer />}
