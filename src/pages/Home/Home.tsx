@@ -24,7 +24,7 @@ export type ITabType = 'csv' | 'prn' | 'json' | 'table' | 'loader'
 // ---
 
 export const Home = () => {
-	const [tab, setTab] = useState<ITabType>('prn')
+	const [tab, setTab] = useState<ITabType>('csv')
   const [table , setTable] = useState<boolean>(true)
 
 	const handleTabChange = (tab: ITabType) => {

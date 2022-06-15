@@ -18,7 +18,7 @@ interface IProps {
 // ---
 
 export const Uploader: FC<IProps> = ({ type }) => {
-	const [inLoading, setInLoading] = useState<boolean>(false)
+	const [_, setInLoading] = useState<boolean>(false)
 
 	const { setFileCSVAction, setFilePRNAction, setCorrectMessageAction } =
 		useApp()

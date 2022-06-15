@@ -42,11 +42,6 @@ function appReducer(state: IState, action: IAction) {
 				...state,
 				fileCsv: action.payload
 			}
-		}case 'SET_FILE_ACTION_PRN': {
-			return {
-				...state,
-				filePrn: action.payload
-			}
 		}
 
 		case 'SET_FILE_ACTION_PRN': {
@@ -97,7 +92,9 @@ export const AppProvider: FC<IState> = props => {
 			setFilePRNAction,
 			setCorrectMessageAction
 		}),
-		[state]
+		[state , setFileCSVAction,
+			setFilePRNAction,
+			setCorrectMessageAction]
 	)
 
 	return <AppContext.Provider value={value} {...props} />
