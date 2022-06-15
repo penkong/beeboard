@@ -4,7 +4,7 @@ import ReactJson from 'react-json-view'
 // ---
 
 import { useApp } from '../../context'
-import { CSVContainterStyle } from './CSVContainer.styled'
+import { CSVContainterStyle, CSVTableStyle } from './CSVContainer.styled'
 
 // ---
 
@@ -20,7 +20,7 @@ export const CSVContainer: FC<IProps> = ({ table }) => {
 	const renderer = (info: any) => {
 		if (table) {
 			return (
-				<table>
+				<CSVTableStyle>
 					<thead>
 						<tr>
 							{info[0].map((item: any, idx: number) => (
@@ -31,17 +31,17 @@ export const CSVContainer: FC<IProps> = ({ table }) => {
 					<tbody>
 						{info.slice(1).map((item: any, idx: number) => (
 							<tr key={idx}>
-								{item.map((item: any, idx: number) => (
+								{item.length && item.map((item: any, idx: number) => (
 									<td key={idx}>{item.replace(/[^\x00-\x7F]/g, "")}</td>
 								))}
 							</tr>
 						))}
 					</tbody>
-				</table>
+				</CSVTableStyle>
 			)
 		} else {
 			return (
-				<div>
+				<div style={{ maxHeight: '96%'}}>
 					<ReactJson src={info} />
 				</div>
 			)
